@@ -1,5 +1,18 @@
 # 更新日志
 
+## 未发布（9）
+
+新增 2 条（新文件 `docs/identity-rename.md`）+ 1 份流程文档。
+
+- **#39** 改名后留言板的人机校验一直报「无法连接到网站」 —— Turnstile widget 的 hostname 白名单
+  在 Cloudflare 后台，不在仓库里；现象是「只有一个组件坏，整站其它正常」，
+  因为它渲染的是 Cloudflare 自己的报错 UI。错误码 300030。
+- **#40** 改名后 GitHub 卡片一直显示旧用户名 —— 用户名存在 D1 的 `settings.github_user`，
+  优先级高于源码默认值；且必须清掉 `github_snapshot`，否则旧快照会一直兜底。
+  附一个反直觉点：Cloudflare 出口拉 `api.github.com` 常失败/限流，而本机 curl 是 200。
+- 新增 `docs/rename-checklist.md`：改名 6 个阶段 + 两处服务方配置 + 「按症状反查」清单。
+
+
 ## 未发布（8）
 
 新增 1 条。

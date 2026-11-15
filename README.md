@@ -92,6 +92,14 @@
 | [37](docs/platform-quirks.md#37-程序装在-u-盘上崩溃码天天不一样签名却完全有效) | 程序装在 U 盘上：崩溃码天天不一样，签名却完全有效 | `Get-Volume` 显示 `Removable` + `Warning` |
 | [38](docs/platform-quirks.md#38-会话日志是一份凭据仓库) | 会话日志是一份凭据仓库 | 对话里贴过的 token，明文存在 session.v4.jsonl.zstd 里 |
 
+### 改名字 / 身份迁移
+| # | 坑 | 一句话信号 |
+| --- | --- | --- |
+| [39](docs/identity-rename.md#39-改名后留言板的人机校验一直报无法连接到网站) | 改名后留言板的人机校验一直报「无法连接到网站」 | 旧域名下验证框正常、新域名下报错 |
+| [40](docs/identity-rename.md#40-改名后-github-卡片一直显示旧用户名) | 改名后 GitHub 卡片一直显示旧用户名 | D1 `settings.github_user` 里还是旧值 |
+
+> 完整的改名流程（6 个阶段 + 两处服务方配置）见 [docs/rename-checklist.md](docs/rename-checklist.md)。
+
 ### 工具
 | # | 坑 | 一句话信号 |
 | --- | --- | --- |
