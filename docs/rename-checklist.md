@@ -32,6 +32,29 @@
   - 浏览器 F12 → Network 里 `/api/*` 请求打到 `api.whalemiao.dpdns.org`
   - 文章详情页 `/a/<slug>` 的 canonical 指向新域
 
+- [ ] **列出「服务方后台里存着旧名字 / 旧域名」的地方**
+
+  这一条比上面三条都重要，因为它**不在代码里，`grep` 搜不到**，只能靠列清单。
+
+  改名时逐条确认（每条的检查方式都写在下表）：
+
+  | 存在哪 | 存了什么 | 怎么查 | 不改会怎样 |
+  | --- | --- | --- | --- |
+  | **Cloudflare Turnstile** | widget 的 hostname 白名单 | Dashboard → Turnstile → Settings → Hostnames | 留言板人机校验报「无法连接到网站」（300030） |
+  | **D1 `settings` 表** | `github_user`（还有 `github_snapshot` 快照） | `wrangler d1 execute <db> --remote --command "SELECT key,substr(value,1,40) FROM settings WHERE key LIKE 'github%'"` | 首页 GitHub 卡片一直显示旧用户名 + 「缓存快照」 |
+  | **Worker 的 `ALLOWED_ORIGINS` / 前端 `SITE_ROOTS`** | 允许的来源域名 | `grep -rn "dpdns.org" worker/ frontend/` | 新域名接口 403、CORS 失败 |
+  | **Cloudflare 账号显示名** | `xxx@163.com's Account` | Dashboard 右上角 | 只是显示，不影响功能（可改可不改） |
+  | **Email Routing / 发信地址** | `hi@<旧域名>` 之类 | Dashboard → Email → Routing | 邮件退回或指向旧域 |
+  | **GitHub 侧的描述 / 主页 / social** | 个人简介里的链接 | `https://github.com/<新名>` 看 Profile | 简介里还链着旧地址 |
+  | **第三方（Discord / B站 / 友链）** | 你的主页链接 | 人工看 | 旧链接 404（GitHub 仓库会 301，主页链接不会） |
+
+  **这里的关键不是"改"，而是"知道自己有哪些地方存了名字"。**
+  改名当天把这张表过一遍，比改名两周后被用户报告要好。
+
+  > 实测：这次改名后**第二天**就碰到前两条（Turnstile、D1），
+  > 两次都是"用着用着突然发现"，不是主动检查出来的 —— 见
+  > [identity-rename.md](identity-rename.md)。
+
 ---
 
 ## 阶段 1：改名（你在 GitHub 上操作）
